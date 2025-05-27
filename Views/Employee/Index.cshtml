@@ -1,0 +1,68 @@
+@model IEnumerable<Myportal.Models.Employee>
+
+@{
+    ViewData["Title"] = "Employee Search";
+}
+
+<h2>Employee Directory</h2>
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-success">Add New Employee</a>
+</div>
+
+<form asp-action="Index" method="get" class="form-inline mb-3">
+    <div class="form-group">
+        <input type="text" name="searchString" value="@ViewContext.HttpContext.Request.Query["searchString"]" class="form-control mr-2" placeholder="Search employees..." />
+
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">No employees found.</div>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Hire Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.FullName</td>
+                    <td>@employee.Email</td>
+                    <td>@employee.Department</td>
+                    <td>@employee.HireDate.ToShortDateString()</td>
+                    <td>
+    @if (employee.IsActive)
+    {
+        <span class="badge" style="background-color:#e0e0e0; color:black;">Active</span>
+    }
+    else
+    {
+        <span class="badge" style="background-color:#e0e0e0; color:black;">Inactive</span>
+    }
+</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-info btn-sm">View</a>
+                        <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@employee.Id" 
+   class="btn btn-danger btn-sm" 
+   onclick="return confirm('Are you sure you want to delete @employee.FullName?');">
+   Delete
+</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

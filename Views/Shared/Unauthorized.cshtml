@@ -1,0 +1,40 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "401 Unauthorized";
+    Layout = "_Layout"; // Use your layout file if you have one
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 text-warning mb-4">
+                <i class="fas fa-lock"></i> @ViewData["Title"]
+            </h1>
+            <div class="alert alert-warning">
+                <h2>Authentication Required</h2>
+                <p class="lead">Please login to access this resource.</p>
+                
+                @if (!string.IsNullOrEmpty(Model.Path))
+                {
+                    <p><strong>Requested path:</strong> @Model.Path</p>
+                }
+                
+                @if (Model.ShowRequestId)
+                {
+                    <p class="small text-muted">Request ID: @Model.RequestId</p>
+                }
+            </div>
+            
+            <div class="mt-4">
+                <a href="@Url.Action("Login", "Account", new { returnUrl = Model.Path })" 
+                   class="btn btn-primary btn-lg">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                
+                <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary btn-lg ml-3">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
