@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Myportal.Data;
 using Myportal.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,14 +38,12 @@ namespace Myportal.Controllers
         // GET: /Employee/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
             var employee = await _context.Employees
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (employee == null)
-                return NotFound();
+            if (employee == null) return NotFound();
 
             return View(employee);
         }
@@ -61,76 +60,69 @@ namespace Myportal.Controllers
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,Department,HireDate,TerminationDate,IsActive")] Employee employee)
         {
             if (ModelState.IsValid)
-{
-    employee.HireDate = DateTime.SpecifyKind(employee.HireDate, DateTimeKind.Utc);
+            {
+                employee.HireDate = DateTime.SpecifyKind(employee.HireDate, DateTimeKind.Utc);
 
-    if (employee.TerminationDate.HasValue)
-        employee.TerminationDate = DateTime.SpecifyKind(employee.TerminationDate.Value, DateTimeKind.Utc);
+                if (employee.TerminationDate.HasValue)
+                    employee.TerminationDate = DateTime.SpecifyKind(employee.TerminationDate.Value, DateTimeKind.Utc);
 
-    _context.Add(employee);
-    await _context.SaveChangesAsync();
-    return RedirectToAction(nameof(Index));
-}
+                _context.Add(employee);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
             return View(employee);
         }
 
         // GET: /Employee/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
             var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
-                return NotFound();
+            if (employee == null) return NotFound();
 
             return View(employee);
         }
 
         // POST: /Employee/Edit/5
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Email,Department,HireDate,TerminationDate,IsActive")] Employee employee)
-{
-    if (id != employee.Id)
-        return NotFound();
-
-    if (ModelState.IsValid)
-    {
-        try
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Email,Department,HireDate,TerminationDate,IsActive")] Employee employee)
         {
-            // Ensure UTC DateTime values for PostgreSQL
-            employee.HireDate = DateTime.SpecifyKind(employee.HireDate, DateTimeKind.Utc);
+            if (id != employee.Id) return NotFound();
 
-            if (employee.TerminationDate.HasValue)
-                employee.TerminationDate = DateTime.SpecifyKind(employee.TerminationDate.Value, DateTimeKind.Utc);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    employee.HireDate = DateTime.SpecifyKind(employee.HireDate, DateTimeKind.Utc);
 
-            _context.Update(employee);
-            await _context.SaveChangesAsync();
+                    if (employee.TerminationDate.HasValue)
+                        employee.TerminationDate = DateTime.SpecifyKind(employee.TerminationDate.Value, DateTimeKind.Utc);
+
+                    _context.Update(employee);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EmployeeExists(employee.Id)) return NotFound();
+                    else throw;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(employee);
         }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!EmployeeExists(employee.Id))
-                return NotFound();
-            else
-                throw;
-        }
-        return RedirectToAction(nameof(Index));
-    }
 
-    return View(employee);
-}
         // GET: /Employee/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
             var employee = await _context.Employees
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (employee == null)
-                return NotFound();
+            if (employee == null) return NotFound();
 
             return View(employee);
         }

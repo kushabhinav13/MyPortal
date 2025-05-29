@@ -1,0 +1,41 @@
+@model Myportal.Models.Assignment
+@{
+    ViewData["Title"] = "Edit Assignment";
+}
+
+<h2>Edit Assignment</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="AssetId" class="form-label">Asset</label>
+        <select asp-for="AssetId" asp-items="ViewBag.AssetList" class="form-select"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="EmployeeId" class="form-label">Employee</label>
+        <select asp-for="EmployeeId" asp-items="ViewBag.EmployeeList" class="form-select"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="AssignedDate" class="form-label">Assigned Date</label>
+        <input asp-for="AssignedDate" class="form-control" type="date" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="ReturnDate" class="form-label">Return Date</label>
+        <input asp-for="ReturnDate" class="form-control" type="date" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label">Notes</label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Status" class="form-label">Status</label>
+        <select asp-for="Status" class="form-select">
+            @foreach (var status in Enum.GetValues(typeof(Myportal.Models.Assignment)))
+            {
+                <option value="@status">@status</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-warning">Update</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -27,7 +27,7 @@ namespace Myportal.Models
         public bool IsActive { get; set; } = true;
 
         // Navigation property
-        public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
+        public ICollection<Assignment> Assignment { get; set; } = new List<Assignment>();
 
         // Computed property
         public string FullName => $"{FirstName} {LastName}";

@@ -1,0 +1,49 @@
+@model Myportal.Models.Assignment
+
+@{
+    ViewData["Title"] = "Create Assignment";
+}
+
+<h2>Create Assignment</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="AssetId"></label>
+        <select asp-for="AssetId" class="form-control" asp-items="ViewBag.AssetId"></select>
+        <span asp-validation-for="AssetId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EmployeeId"></label>
+        <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
+        <span asp-validation-for="EmployeeId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AssignedDate"></label>
+        <input asp-for="AssignedDate" class="form-control" type="date" />
+        <span asp-validation-for="AssignedDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReturnDate"></label>
+        <input asp-for="ReturnDate" class="form-control" type="date" />
+        <span asp-validation-for="ReturnDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Notes"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<Myportal.Models.Assignment.AssignmentStatus>()"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Create</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

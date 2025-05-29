@@ -11,7 +11,7 @@ namespace Myportal.Models
         public AssetStatus Status { get; set; } = AssetStatus.Available;
         
         // Navigation properties
-        public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
+        public ICollection<Assignment> Assignment { get; set; } = new List<Assignment>();
         public ICollection<MaintenanceLog> MaintenanceLogs { get; set; } = new List<MaintenanceLog>();
 
         public enum AssetStatus

@@ -18,12 +18,12 @@ namespace Myportal.Data
             // Configure relationships
             modelBuilder.Entity<Assignment>()
                 .HasOne(a => a.Asset)
-                .WithMany(a => a.Assignments)
+                .WithMany(a => a.Assignment)
                 .HasForeignKey(a => a.AssetId);
 
             modelBuilder.Entity<Assignment>()
                 .HasOne(a => a.Employee)
-                .WithMany(e => e.Assignments)
+                .WithMany(e => e.Assignment)
                 .HasForeignKey(a => a.EmployeeId);
 
             modelBuilder.Entity<MaintenanceLog>()
